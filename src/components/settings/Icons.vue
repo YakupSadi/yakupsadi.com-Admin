@@ -78,9 +78,7 @@
         <div class="container">
             <img v-if="props.title === 'img'" :src="`http://localhost:3000/api/v1/addIcon/${ props.path }`" alt="Icon">
 
-            <span v-else-if="props.title === 'svg'" v-html="svgPath"></span>
-
-            <span v-else v-html="props.path"></span>
+            <span v-else v-html="svgPath"></span>
         </div>
     </div>
 </template>
@@ -116,14 +114,6 @@
         align-items: center;
         justify-content: center;
         background-color: rgba( 0, 0, 0, 0.467 );
-    }
-
-    .icon > .container > span
-    {
-        height: 1em;
-        fill: #fff;
-        display: flex;
-        font-size: 2.8rem;        
     }
 
     .icon > .container > img

@@ -1,7 +1,7 @@
 <script setup>
     import { ref }      from 'vue'
-    import axios        from 'axios'
     import { useStore } from 'vuex'
+    import axios        from 'axios'
 
     import XMark    from '../icons/XMark.vue'
 
@@ -11,7 +11,6 @@
     const data = ref({
 
         svg  : '',
-        icon : ''
     })
 
 
@@ -20,7 +19,6 @@
     const showIcon = () => {
 
         data.value.svg  = ''
-        data.value.icon = ''
 
         store.commit( 'showIcon' )
     }
@@ -41,7 +39,6 @@
         const formData = new FormData()
 
         formData.append( 'image', imageInput.value.files[ 0 ] )
-        formData.append( 'svgPath', data.value.icon )
 
         axios.post( 'http://localhost:3000/api/v1/addIcon', formData, {
 
@@ -53,8 +50,6 @@
         .then( () => {
 
             data.value.svg   = ''
-            data.value.icon  = ''
-
             imageInput.value = null
 
             store.commit( 'showIcon' )
@@ -70,35 +65,18 @@
     <div id="addIcon">
         <form @submit.prevent="addIcon">
             <div class="container">
-                <div>
-                    <input
-                        id="icon"
-                        type="text"
-                        name="icon"
-                        autocomplete="off"
-                        v-model="data.icon"
-                    />
-                    <label for="icon" :class="{ 'inpPos': data.icon.length > 0 }">Paste Icon Path</label>
-                </div>
+                <input
+                    type="file"
+                    id="svgIcon"
+                    name="svgIcon"
+                    ref="imageInput"
+                    accept="image/*"
+                    @change="svgListener"
+                />
+                
+                <img v-if="data.svg.length > 0" :src="data.svg" alt="Image">
 
-                <div>
-                    <span>OR</span>
-                </div>
-
-                <div>
-                    <input
-                        type="file"
-                        id="svgIcon"
-                        name="svgIcon"
-                        ref="imageInput"
-                        accept="image/*"
-                        @change="svgListener"
-                    />
-
-                    <img v-if="data.svg.length > 0" :src="data.svg" alt="Image">
-
-                    <label v-else for="icon">Select SVG File</label>
-                </div>
+                <label v-else for="icon">Select SVG File</label>
             </div>
 
             <button type="submit">Save</button>
@@ -163,70 +141,28 @@
     {
         gap: 2rem;
         display: flex;
+        padding: 1rem;
         margin: 0 auto;
+        position: relative;
+        align-items: center;
         border-radius: .3rem;
         flex-direction: column;
+        border: .2rem solid #fff;
     }
 
-/***** ****/
-
-    #addIcon > form > .container > div
+    #addIcon > form > .container > input
     {
-        position: relative;
-    }
-
-    #addIcon > form > .container > div > input
-    {
+        opacity: 0;
         color: #fff;
         outline: none;
+        cursor: pointer;
         font-size: 1.2rem;
         padding: .7rem 1rem;
         border-radius: .2rem;
         border: .2rem solid #fff;
     }
 
-    #addIcon > form > .container > div:nth-child( 1 ) > label
-    {
-        top: 1rem;
-        left: 1rem;
-        color: #fff;
-        padding: 0 .5rem;
-        position: absolute;
-        border-radius: .2rem;
-        pointer-events: none;
-        background-color: #0f111c;
-        transition: all .3s ease-in-out;
-    }
-
-    #addIcon > form > .container > div:nth-child( 1 ) > input:focus + label
-    {
-        top: -.7rem;
-    }
-
-    #addIcon > form > .container > div:nth-child( 1 ) > .inpPos
-    {
-        top: -.7rem;
-    }
-
-    #addIcon > form > .container > div:nth-child( 2 )
-    {
-        color: #fff;
-        display: flex;
-        font-size: 1.5rem;
-        justify-content: center;
-    }
-
-    #addIcon > form > .container > div:nth-child( 3 )
-    {
-        border: .2rem solid #fff;
-    }
-
-    #addIcon > form > .container > div:nth-child( 3 ) > input
-    {
-        opacity: 0;
-    }
-
-    #addIcon > form > .container > div:nth-child( 3 ) > label
+    #addIcon > form > .container > label
     {
         top: 0;
         left: 0;
@@ -240,7 +176,7 @@
         justify-content: center;
     }
 
-    #addIcon > form > .container > div:nth-child( 3 ) > input::after
+    #addIcon > form > .container > input::after
     {
         top: 0;
         left: 0;
@@ -251,15 +187,12 @@
         position: absolute;
     }
 
-    #addIcon > form > .container > div:nth-child( 3 ) > img
+    #addIcon > form > .container > img
     {
         top: 0;
-        left: 14rem;
         height: 100%;
-        width: 3.6rem;
         position: absolute;
         pointer-events: none;
-        background-color: #fff;
     }
 
 /***** ****/

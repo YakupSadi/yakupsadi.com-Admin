@@ -103,7 +103,7 @@
             <span v-if="props.data.opt === ''">Select Icon</span>
 
             <span v-else-if="data.opt.endsWith( '</svg>' )" v-html="data.opt" class="svg_size"></span>
-            <span v-else-if="props.data.opt && props.data.opt.endsWith( '</svg>' )" v-html="props.data.opt" class="svg_size"></span>
+            <span v-else-if="props.data.opt && props.data.opt.endsWith( '</svg>' )" v-html="props.data.opt"></span>
 
             <img v-else-if="props.data.opt" :src="`http://localhost:3000/api/v1/addIcon/${ props.data.opt }`" alt="Icon">
             <img v-else :src="`http://localhost:3000/api/v1/addIcon/${ data.opt }`" alt="Icon">
@@ -161,9 +161,7 @@
 
     .box > button > span
     {
-        height: 2rem;
         display: flex;
-        font-size: 1.4rem;
     }
 
     .box > button > .svg_size
@@ -218,19 +216,12 @@
     .box > fieldset > div > label
     {
         display: flex;
-        height: 3.5rem;
         cursor: pointer;
         font-size: 2.7rem;
-        padding: .2rem 1rem;
+        padding: .5rem 1rem;
         border-radius: .2rem;
         border: .2rem solid #fff;
         transition: color, background-color .2s ease;
-    }
-
-    .box > fieldset > div > label:hover
-    {
-        color: #fff;
-        background-color: #fff;
     }
 
     .box > fieldset > div > label > img
